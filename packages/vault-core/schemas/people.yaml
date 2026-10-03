@@ -1,0 +1,33 @@
+name: 人
+folder: people
+icon: 👤
+
+fields:
+  relationship: { type: multi_select, label: 关系, options: [family, friend, classmate, colleague, mentor, client, sponsor] }
+  company:      { type: text, label: 公司 }
+  role:         { type: text, label: 职位 }
+  email:        { type: text, label: 邮箱 }
+  phone:        { type: text, label: 电话 }
+  location:     { type: text, label: 所在地 }
+  birthday:     { type: date, label: 生日 }
+  areas:        { type: relation, label: 领域, to: areas, multiple: true }
+  interests:    { type: multi_select, label: 兴趣, options: [] }
+  pipeline:     { type: select, label: 合作阶段, options: [prospect, contacted, negotiating, closed, lost] }
+  next_checkin: { type: date, label: 下次联系 }
+  last_checkin: { type: date, label: 上次联系 }
+  linkedin:     { type: url, label: LinkedIn }
+  website:      { type: url, label: 网站 }
+
+views:
+  - name: 全部
+    type: table
+    columns: [name, relationship, company, next_checkin]
+
+  - name: 待联系
+    type: list
+    filter: [[next_checkin, on_or_before, today]]
+    sort: [next_checkin]
+
+  - name: 合作
+    type: board
+    group: pipeline

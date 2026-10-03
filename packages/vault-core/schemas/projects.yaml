@@ -1,0 +1,39 @@
+name: 项目
+folder: projects
+icon: 📁
+
+fields:
+  status:    { type: status, label: 状态, options: [planned, active, on-hold, done], default: planned }
+  area:      { type: relation, label: 领域, to: areas }
+  goal:      { type: relation, label: 目标, to: goals }
+  people:    { type: relation, label: 相关的人, to: people, multiple: true }
+  deadline:  { type: date, label: 截止, range: start }
+  completed: { type: date, label: 完成于 }
+  archived:  { type: checkbox, label: 归档 }
+
+computed:
+  progress: { fn: progress, from: tasks, via: project, label: 进度 }
+  tasks:    { fn: count, from: tasks, via: project, label: 任务数 }
+  notes:    { fn: count, from: notes, via: project, label: 笔记数 }
+  overdue:  { fn: overdue, field: deadline, label: 逾期 }
+
+views:
+  - name: 进行中
+    type: list
+    filter: [[status, is, active]]
+    sort: [deadline]
+
+  - name: 看板
+    type: board
+    group: status
+    sort: [deadline]
+
+  - name: 按领域
+    type: table
+    filter: [[status, is_not, done]]
+    group: area
+    columns: [name, status, deadline, progress]
+
+  - name: 日历
+    type: calendar
+    date: deadline

@@ -1,0 +1,18 @@
+# My Day 的 Wrap Up 输出
+name: 每日复盘
+folder: reviews/daily
+icon: 🌙
+
+fields:
+  date:   { type: date, label: 日期 }
+  mood:   { type: select, label: 心情, options: [great, good, okay, bad] }
+  energy: { type: select, label: 精力, options: [high, medium, low] }
+
+views:
+  - name: 最近
+    type: list
+    sort: [-date]
+
+  - name: 日历
+    type: calendar
+    date: date

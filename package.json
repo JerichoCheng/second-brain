@@ -1,0 +1,26 @@
+{
+  "name": "second-brain",
+  "private": true,
+  "description": "本地优先的个人第二大脑：Markdown 知识库 + 类 Notion 界面 + DeepSeek agent",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @second-brain/desktop",
+    "build:desktop": "npm run build -w @second-brain/desktop",
+    "test": "npm run test --workspaces --if-present",
+    "mail:mock": "npm run mock -w @second-brain/mail-digest",
+    "mail:dry": "npm run dry -w @second-brain/mail-digest",
+    "mail:digest": "npm run digest -w @second-brain/mail-digest",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "allowScripts": {
+    "electron@44.5.1": true,
+    "esbuild@0.28.2": true,
+    "esbuild@0.25.12": true
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "vaultPath": "C:/Users/你的用户名/vault",
+  "deepseek": {
+    "baseUrl": "https://api.deepseek.com",
+    "model": "deepseek-v4-flash",
+    "batchSize": 8
+  },
+  "firstRunHours": 24,
+  "maxBodyChars": 8000,
+  "accounts": [
+    {
+      "id": "UWA",
+      "type": "graph",
+      "clientId": "在 Entra 注册应用后得到的 Application (client) ID",
+      "tenant": "organizations"
+    },
+    {
+      "id": "Gmail",
+      "type": "imap",
+      "host": "imap.gmail.com",
+      "port": 993,
+      "user": "you@gmail.com",
+      "passwordEnv": "GMAIL_APP_PASSWORD",
+      "gmailQuery": "-category:promotions -category:social"
+    },
+    {
+      "id": "QQ",
+      "type": "imap",
+      "host": "imap.qq.com",
+      "port": 993,
+      "user": "123456@qq.com",
+      "passwordEnv": "QQ_AUTH_CODE"
+    },
+    {
+      "id": "163",
+      "type": "imap",
+      "host": "imap.163.com",
+      "port": 993,
+      "user": "you@163.com",
+      "passwordEnv": "NETEASE_AUTH_CODE"
+    }
+  ],
+  "ignore": {
+    "senders": ["noreply@medium.com", "*@info.*", "*@marketing.*"],
+    "subjects": ["newsletter", "weekly digest"]
+  }
+}

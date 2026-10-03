@@ -1,0 +1,32 @@
+name: 错题本
+folder: study/corrections
+icon: ❌
+
+fields:
+  course:        { type: relation, label: 课程, to: areas }
+  topic:         { type: text, label: 主题 }
+  source:        { type: text, label: 题目来源 }
+  question_type: { type: select, label: 题型, options: [选择题, 填空题, 计算题, 证明题, 简答题, 编程题] }
+  difficulty:    { type: number, label: 难度 }
+  mastery:       { type: status, label: 掌握程度, options: [未掌握, 模糊, 已掌握], complete: [已掌握], default: 未掌握 }
+  error_types:   { type: multi_select, label: 错误类型, options: [概念不清, 方法不会, 计算错误, 审题错误, 粗心] }
+  date:          { type: date, label: 日期 }
+  next_review:   { type: date, label: 下次复习 }
+
+views:
+  - name: 待复习
+    type: list
+    filter:
+      - [mastery, is_not, 已掌握]
+      - any: [[next_review, is_empty], [next_review, on_or_before, today]]
+    sort: [next_review, -difficulty]
+
+  - name: 按课程
+    type: table
+    group: course
+    sort: [-date]
+    columns: [name, topic, question_type, mastery, date]
+
+  - name: 看板
+    type: board
+    group: mastery

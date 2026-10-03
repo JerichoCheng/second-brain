@@ -1,0 +1,30 @@
+name: 食谱
+folder: recipes
+icon: 🍳
+
+fields:
+  meal:     { type: multi_select, label: 餐次, options: [breakfast, lunch, dinner, snack] }
+  tags:     { type: multi_select, label: 标签, options: [] }
+  servings: { type: number, label: 份数 }
+  prep_min: { type: number, label: 准备（分钟） }
+  cook_min: { type: number, label: 烹饪（分钟） }
+  url:      { type: url, label: 来源 }
+  cover:    { type: url, label: 图片 }
+  favorite: { type: checkbox, label: 收藏 }
+
+computed:
+  planned: { fn: count, from: meals, via: recipes, label: 计划次数 }
+
+views:
+  - name: 全部
+    type: gallery
+    cover: cover
+
+  - name: 收藏
+    type: gallery
+    cover: cover
+    filter: [[favorite, is, true]]
+
+  - name: 按餐次
+    type: list
+    group: meal

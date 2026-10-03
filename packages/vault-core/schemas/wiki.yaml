@@ -1,0 +1,12 @@
+name: Wiki
+folder: wiki
+icon: 📖
+
+fields:
+  area:    { type: relation, label: 领域, to: areas }
+  channel: { type: relation, label: 渠道, to: channels }
+
+views:
+  - name: 全部
+    type: list
+    group: area

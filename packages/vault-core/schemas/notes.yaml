@@ -1,0 +1,48 @@
+name: 笔记
+folder: notes
+icon: 📝
+
+fields:
+  kind:      { type: select, label: 类型, options: [note, lecture, reference, journal, meeting, plan, research, book-note, swipe], default: note }
+  area:      { type: relation, label: 领域, to: areas }
+  project:   { type: relation, label: 项目, to: projects }
+  people:    { type: relation, label: 相关的人, to: people, multiple: true }
+  content:   { type: relation, label: 内容, to: content }
+  url:       { type: url, label: 链接 }
+  note_date: { type: date, label: 日期 }
+  review:    { type: date, label: 复习日期 }
+  labels:    { type: multi_select, label: 标签, options: [] }
+  favorite:  { type: checkbox, label: 收藏 }
+  archived:  { type: checkbox, label: 归档 }
+
+views:
+  # Note Inbox：还没归到任何领域或项目的笔记
+  - name: 待整理
+    type: list
+    filter: [[area, is_empty], [project, is_empty]]
+    sort: [-mtime]
+
+  - name: 最近
+    type: table
+    sort: [-note_date, -mtime]
+    columns: [name, kind, area, project, note_date]
+
+  - name: 收藏
+    type: list
+    filter: [[favorite, is, true]]
+
+  - name: 按领域
+    type: table
+    group: area
+    sort: [-note_date]
+
+  - name: 课程笔记
+    type: list
+    filter: [[kind, is, lecture]]
+    group: area
+    sort: [note_date]
+
+  - name: 待复习
+    type: list
+    filter: [[review, on_or_before, today]]
+    sort: [review]

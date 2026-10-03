@@ -1,0 +1,24 @@
+# 原 Ultimate Brain 的 Tags
+name: 领域
+folder: areas
+icon: 🗂️
+
+fields:
+  kind:     { type: select, label: 类型, options: [area, resource, entity, course], default: area }
+  parent:   { type: relation, label: 上级, to: areas }
+  favorite: { type: checkbox, label: 收藏 }
+  archived: { type: checkbox, label: 归档 }
+
+computed:
+  notes:    { fn: count, from: notes, via: area, label: 笔记数 }
+  projects: { fn: count, from: projects, via: area, label: 项目数 }
+
+views:
+  - name: 全部
+    type: table
+    group: kind
+    columns: [name, kind, parent, notes, projects]
+
+  - name: 课程
+    type: list
+    filter: [[kind, is, course]]

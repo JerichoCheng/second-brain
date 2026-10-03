@@ -1,0 +1,20 @@
+# 餐计划；采购清单作为普通页面放在 meals/ 下
+name: 餐计划
+folder: meals
+icon: 🍽️
+
+fields:
+  date:    { type: date, label: 日期 }
+  meal:    { type: select, label: 餐次, options: [breakfast, lunch, dinner, snack] }
+  recipes: { type: relation, label: 食谱, to: recipes, multiple: true }
+
+views:
+  - name: 本周
+    type: list
+    filter: [[date, within, this_week]]
+    sort: [meal]
+    group: date
+
+  - name: 日历
+    type: calendar
+    date: date

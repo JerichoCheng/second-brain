@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }],
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/renderer/src/*"],
+      "@second-brain/vault-core": ["../../packages/vault-core/src/index.ts"],
+      "@second-brain/vault-core/types": ["../../packages/vault-core/src/types.ts"],
+      "@shared/*": ["./src/shared/*"]
+    }
+  }
+}

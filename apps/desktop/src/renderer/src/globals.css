@@ -1,0 +1,174 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * 颜色：中性冷灰 + 一种墨蓝色，界面让位给内容。
+ * 变量名沿用 shadcn/ui 的约定，以后用 shadcn 添加的组件可以直接套用。
+ */
+:root {
+  --radius: 0.375rem;
+  --background: #ffffff;
+  --foreground: #1e2126;
+  --muted: #f3f4f6;
+  --muted-foreground: #6a6f78;
+  --sidebar: #f4f5f7;
+  --sidebar-foreground: #464b53;
+  --sidebar-accent: #e6e8ec;
+  --sidebar-accent-foreground: #1e2126;
+  --border: #e4e6ea;
+  --input: #d5d8de;
+  --primary: #2c4a7c;
+  --primary-foreground: #ffffff;
+  --secondary: #eef0f3;
+  --secondary-foreground: #1e2126;
+  --accent: #eef0f3;
+  --accent-foreground: #1e2126;
+  --destructive: #b8342c;
+  --success: #2e7a4f;
+  --warning: #8a5a00;
+  --warning-surface: #fdf6e7;
+  --ring: #2c4a7c;
+  --popover: #ffffff;
+  --popover-foreground: #1e2126;
+  --hover: #f1f2f4;
+  --selected: #e8eef8;
+
+  /* 选项标签的颜色，按选项顺序轮流使用 */
+  --tag-gray: #ebeced;
+  --tag-gray-fg: #4a4f57;
+  --tag-blue: #dde9f7;
+  --tag-blue-fg: #24548a;
+  --tag-yellow: #f8efcf;
+  --tag-yellow-fg: #765b0a;
+  --tag-orange: #fbe7d7;
+  --tag-orange-fg: #8a4b14;
+  --tag-purple: #ebe3f5;
+  --tag-purple-fg: #5b3d8a;
+  --tag-green: #ddefe4;
+  --tag-green-fg: #2a6644;
+  --tag-pink: #f6e0ea;
+  --tag-pink-fg: #8a3560;
+  --tag-brown: #f1e8e2;
+  --tag-brown-fg: #6b4a36;
+  --tag-red: #f9dfdc;
+  --tag-red-fg: #973a32;
+}
+
+.dark {
+  --background: #18191b;
+  --foreground: #e4e6e9;
+  --muted: #222427;
+  --muted-foreground: #969ba3;
+  --sidebar: #1f2023;
+  --sidebar-foreground: #b6bac1;
+  --sidebar-accent: #2c2e32;
+  --sidebar-accent-foreground: #e4e6e9;
+  --border: #2d2f33;
+  --input: #3a3d42;
+  --primary: #8eaee0;
+  --primary-foreground: #14181f;
+  --secondary: #26282c;
+  --secondary-foreground: #e4e6e9;
+  --accent: #26282c;
+  --accent-foreground: #e4e6e9;
+  --destructive: #e0675f;
+  --success: #6cc18f;
+  --warning: #e3b55a;
+  --warning-surface: #2a2416;
+  --ring: #8eaee0;
+  --popover: #202225;
+  --popover-foreground: #e4e6e9;
+  --hover: #24262a;
+  --selected: #23304a;
+
+  --tag-gray: #33363b;
+  --tag-gray-fg: #c5c8cd;
+  --tag-blue: #1f3149;
+  --tag-blue-fg: #94bdeb;
+  --tag-yellow: #403a20;
+  --tag-yellow-fg: #e3cd7d;
+  --tag-orange: #45301f;
+  --tag-orange-fg: #eab184;
+  --tag-purple: #33284a;
+  --tag-purple-fg: #c3a9ea;
+  --tag-green: #213a2c;
+  --tag-green-fg: #8fd1a9;
+  --tag-pink: #43263a;
+  --tag-pink-fg: #e8a6c6;
+  --tag-brown: #3d3029;
+  --tag-brown-fg: #d6b8a3;
+  --tag-red: #4a2522;
+  --tag-red-fg: #f0a29a;
+}
+
+@theme inline {
+  --font-sans: 'Segoe UI Variable Text', 'Segoe UI', 'Microsoft YaHei UI', 'PingFang SC', system-ui, sans-serif;
+  --font-mono: 'Cascadia Mono', Consolas, 'Microsoft YaHei UI', ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-warning-surface: var(--warning-surface);
+  --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-hover: var(--hover);
+  --color-selected: var(--selected);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+/* 创建完成时目录逐项打勾：整个界面唯一的入场动画 */
+@keyframes tick-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.tick-in {
+  animation: tick-in 180ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tick-in {
+    animation: none;
+  }
+}

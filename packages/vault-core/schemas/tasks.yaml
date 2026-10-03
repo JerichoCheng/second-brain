@@ -1,0 +1,80 @@
+name: 任务
+folder: tasks
+icon: ✅
+
+fields:
+  status:     { type: status, label: 状态, options: [inbox, next, doing, waiting, someday, done], default: inbox }
+  priority:   { type: select, label: 优先级, options: [high, medium, low] }
+  due:        { type: date, label: 截止, range: start }
+  project:    { type: relation, label: 项目, to: projects }
+  parent:     { type: relation, label: 父任务, to: tasks }
+  people:     { type: relation, label: 相关的人, to: people, multiple: true }
+  content:    { type: relation, label: 内容, to: content }
+  my_day:     { type: checkbox, label: My Day }
+  snooze:     { type: date, label: 延后到 }
+  wait:       { type: date, label: 等到 }
+  energy:     { type: select, label: 精力, options: [high, low] }
+  labels:     { type: multi_select, label: 标签, options: [] }
+  recur:      { type: recurrence, label: 重复 }
+  recur_days: { type: multi_select, label: 重复日, options: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday] }
+  completed:  { type: date, label: 完成于 }
+
+computed:
+  overdue:  { fn: overdue, field: due, label: 逾期 }
+  subtasks: { fn: count, from: tasks, via: parent, label: 子任务数 }
+
+views:
+  # Ultimate Brain 的 Today：勾了 My Day，或今天及以前到期；延后到未来的不显示
+  - name: Today
+    type: list
+    filter:
+      - [status, is_not, done]
+      - any: [[my_day, is, true], [due, on_or_before, today]]
+      - any: [[snooze, is_empty], [snooze, on_or_before, today]]
+    sort: [priority, due]
+
+  - name: Inbox
+    type: list
+    filter: [[status, is, inbox]]
+    sort: [-mtime]
+
+  - name: Next 7 Days
+    type: list
+    filter:
+      - [due, within, next_7_days]
+      - [status, is_not, done]
+    sort: [priority]
+    group: due
+
+  - name: 按项目
+    type: table
+    filter: [[status, is_not, done]]
+    sort: [priority, due]
+    group: project
+    columns: [name, status, priority, due, project]
+
+  - name: 看板
+    type: board
+    group: status
+    hide: [done]
+    sort: [priority, due]
+
+  - name: 日历
+    type: calendar
+    date: due
+
+  - name: 等待中
+    type: list
+    filter: [[status, is, waiting]]
+    sort: [wait]
+    group: people
+
+  - name: Someday
+    type: list
+    filter: [[status, is, someday]]
+
+  - name: 已完成
+    type: table
+    filter: [[status, is, done]]
+    sort: [-completed]
+    columns: [name, completed, project]

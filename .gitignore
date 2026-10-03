@@ -1,0 +1,25 @@
+# 依赖与构建产物
+node_modules/
+dist/
+out/
+release/
+*.tsbuildinfo
+
+# 密钥与个人配置 —— 永远不要提交
+.env
+.env.*
+!.env.example
+config.json
+*.pem
+
+# 本地数据：vault 是独立的私有目录，不放进代码仓库
+vault/
+mock-vault/
+*.log
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/

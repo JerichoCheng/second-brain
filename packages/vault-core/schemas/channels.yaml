@@ -1,0 +1,16 @@
+name: 渠道
+folder: channels
+icon: 📺
+
+fields:
+  platform: { type: select, label: 平台, options: [YouTube, Bilibili, 小红书, Blog, Podcast, 公众号] }
+  url:      { type: url, label: 链接 }
+  archived: { type: checkbox, label: 归档 }
+
+computed:
+  content: { fn: count, from: content, via: channel, label: 内容数 }
+
+views:
+  - name: 全部
+    type: table
+    columns: [name, platform, url, content]
