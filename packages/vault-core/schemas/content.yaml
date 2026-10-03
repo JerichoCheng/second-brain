@@ -1,0 +1,32 @@
+# Creator's Companion：内容管线
+name: 内容
+folder: content
+icon: 🎬
+
+fields:
+  status:   { type: status, label: 阶段, options: [idea, researching, scripting, filming, editing, scheduled, published], complete: [published], default: idea }
+  channel:  { type: relation, label: 渠道, to: channels }
+  publish:  { type: date, label: 发布日期 }
+  source:   { type: select, label: 来源, options: [mine, audience], default: mine }
+  keywords: { type: multi_select, label: 关键词, options: [] }
+  sponsor:  { type: relation, label: 赞助商, to: people }
+  url:      { type: url, label: 链接 }
+  archived: { type: checkbox, label: 归档 }
+
+computed:
+  tasks: { fn: count, from: tasks, via: content, label: 任务数 }
+  notes: { fn: count, from: notes, via: content, label: 笔记数 }
+
+views:
+  - name: 管线
+    type: board
+    group: status
+
+  - name: 发布日历
+    type: calendar
+    date: publish
+
+  - name: 想法
+    type: list
+    filter: [[status, is, idea]]
+    group: source

@@ -1,0 +1,30 @@
+name: 英语词汇
+folder: study/vocab
+icon: 🔤
+
+fields:
+  pos:          { type: select, label: 词性, options: [n., v., adj., adv., prep., phrase, idiom] }
+  meaning:      { type: text, label: 释义 }
+  collocations: { type: text, label: 搭配 }
+  confidence:   { type: status, label: 熟练度, options: [new, learning, familiar, mastered], complete: [mastered], default: new }
+  domain:       { type: multi_select, label: 领域, options: [] }
+  source:       { type: text, label: 出处 }
+  added:        { type: date, label: 添加于 }
+  next_review:  { type: date, label: 下次复习 }
+
+views:
+  - name: 待复习
+    type: list
+    filter:
+      - [confidence, is_not, mastered]
+      - any: [[next_review, is_empty], [next_review, on_or_before, today]]
+    sort: [confidence]
+
+  - name: 看板
+    type: board
+    group: confidence
+
+  - name: 全部
+    type: table
+    sort: [-added]
+    columns: [name, pos, meaning, confidence]

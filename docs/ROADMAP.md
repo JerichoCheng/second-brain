@@ -8,7 +8,7 @@
 |---|---|---|---|
 | — | 邮件分析独立模块 | — | ✅ |
 | 0 | 项目骨架 | 第 1 周 | ✅ |
-| 1 | 数据层 | 第 2–3 周 | ⬜ |
+| 1 | 数据层 | 第 2–3 周 | ✅ |
 | 2 | 数据库视图 | 第 4–6 周 | ⬜ |
 | 3 | 页面与编辑器 | 第 7–8 周 | ⬜ |
 | 4 | 工作流 | 第 9–10 周 | ⬜ |
@@ -39,11 +39,11 @@
 
 ## 阶段 0：项目骨架
 
-- [ ] 用 electron-vite 的 React + TypeScript 模板创建 `apps/desktop`
-- [ ] 接入 Tailwind CSS 和 shadcn/ui
-- [ ] 目录约定：`src/main`（主进程）、`src/renderer`（界面）、`src/shared`（共用类型）
-- [ ] 通过 contextBridge 暴露带类型的 API，界面不直接访问文件系统
-- [ ] 设置页：选择 vault 路径，初始化目录结构，执行 `git init`
+- [x] 用 electron-vite 的 React + TypeScript 模板创建 `apps/desktop`
+- [x] 接入 Tailwind CSS 和 shadcn/ui
+- [x] 目录约定：`src/main`（主进程）、`src/renderer`（界面）、`src/shared`（共用类型）
+- [x] 通过 contextBridge 暴露带类型的 API，界面不直接访问文件系统
+- [x] 设置页：选择 vault 路径，初始化目录结构，执行 `git init`
 
 **完成标准**：应用能启动，能选择一个空文件夹作为 vault 并生成标准目录。
 
@@ -51,12 +51,12 @@
 
 界面和 agent 都依赖它，所以最先做，并且必须有测试（vitest）。
 
-- [ ] 按 [SCHEMA.md](SCHEMA.md) 定义 schema 格式，并为所有数据库写好 schema 文件（字段、选项、关联、视图）
-- [ ] vault 服务：frontmatter 解析与写回；写入时先写临时文件再重命名
-- [ ] chokidar 监听文件变化，外部修改实时同步到界面
-- [ ] 内存索引与查询引擎：过滤、排序、分组，支持 `today`、`this_week` 等相对日期
-- [ ] 关联：wikilink 双向解析；重命名页面时自动更新所有引用
-- [ ] 汇总与公式：只实现用到的几个（项目进度、是否逾期），不做通用公式引擎
+- [x] 按 [SCHEMA.md](SCHEMA.md) 定义 schema 格式，并为所有数据库写好 schema 文件（字段、选项、关联、视图）
+- [x] vault 服务：frontmatter 解析与写回；写入时先写临时文件再重命名
+- [x] chokidar 监听文件变化，外部修改实时同步到界面
+- [x] 内存索引与查询引擎：过滤、排序、分组，支持 `today`、`this_week` 等相对日期
+- [x] 关联：wikilink 双向解析；重命名页面时自动更新所有引用
+- [x] 汇总与公式：只实现用到的几个（项目进度、是否逾期），不做通用公式引擎
 
 **完成标准**：测试中能按 schema 查出 Today 视图的任务；重命名项目后所有引用同步更新。
 

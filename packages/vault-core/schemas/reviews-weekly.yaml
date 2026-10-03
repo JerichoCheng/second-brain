@@ -1,0 +1,12 @@
+# My Week 的 Clear → Reflect → Plan 输出
+name: 每周复盘
+folder: reviews/weekly
+icon: 📅
+
+fields:
+  week_start: { type: date, label: 周一 }
+
+views:
+  - name: 最近
+    type: list
+    sort: [-week_start]

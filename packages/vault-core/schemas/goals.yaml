@@ -1,0 +1,35 @@
+# 里程碑写在目标页面正文的勾选清单里
+name: 目标
+folder: goals
+icon: 🎯
+
+fields:
+  status:   { type: status, label: 状态, options: [dream, active, achieved, dropped], complete: [achieved], default: active }
+  area:     { type: relation, label: 领域, to: areas }
+  deadline: { type: date, label: 截止 }
+  goal_set: { type: date, label: 设定于 }
+  archived: { type: checkbox, label: 归档 }
+
+computed:
+  progress: { fn: progress, from: projects, via: goal, label: 进度 }
+  overdue:  { fn: overdue, field: deadline, label: 逾期 }
+
+views:
+  - name: 进行中
+    type: list
+    filter: [[status, is, active]]
+    sort: [deadline]
+
+  - name: 本季度
+    type: list
+    filter: [[deadline, within, this_quarter]]
+    sort: [deadline]
+
+  - name: 今年
+    type: list
+    filter: [[deadline, within, this_year]]
+    sort: [deadline]
+
+  - name: 看板
+    type: board
+    group: status

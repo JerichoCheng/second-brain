@@ -1,0 +1,17 @@
+name: B-Roll
+folder: broll
+icon: 🎞️
+
+fields:
+  content:  { type: relation, label: 内容, to: content }
+  status:   { type: status, label: 状态, options: [needed, shot, used], complete: [used], default: needed }
+  location: { type: text, label: 地点 }
+
+views:
+  - name: 按内容
+    type: table
+    group: content
+
+  - name: 待拍
+    type: list
+    filter: [[status, is, needed]]

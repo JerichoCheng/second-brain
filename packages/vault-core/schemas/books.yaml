@@ -1,0 +1,38 @@
+# 阅读记录写在每本书页面的正文里
+name: 书
+folder: books
+icon: 📚
+
+fields:
+  author:    { type: text, label: 作者 }
+  status:    { type: status, label: 状态, options: [want, reading, on-hold, read], complete: [read], default: want }
+  genres:    { type: multi_select, label: 类别, options: [] }
+  rating:    { type: number, label: 评分 }
+  started:   { type: date, label: 开始 }
+  finished:  { type: date, label: 读完 }
+  pages:     { type: number, label: 页数 }
+  formats:   { type: multi_select, label: 版本, options: [paper, ebook, audiobook] }
+  read_next: { type: checkbox, label: 下一本 }
+  cover:     { type: url, label: 封面 }
+  isbn:      { type: text, label: ISBN }
+
+views:
+  - name: 书架
+    type: gallery
+    cover: cover
+    group: status
+
+  - name: 在读
+    type: list
+    filter: [[status, is, reading]]
+
+  - name: 想读
+    type: list
+    filter: [[status, is, want]]
+    sort: [read_next, name]
+
+  - name: 已读
+    type: table
+    filter: [[status, is, read]]
+    sort: [-finished]
+    columns: [name, author, rating, finished]
