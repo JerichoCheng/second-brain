@@ -27,6 +27,11 @@ await vault.update("交 Project 2", { status: "done", completed: "today" });
 await vault.rename("CITS2002", "CITS2002 Systems Programming"); // 全库链接同步更新
 await vault.remove("交 Project 2");                            // 移到 .brain/trash/
 
+// 视图写回 schema 文件（只改这个视图所在的几行）
+await vault.saveView("tasks", { name: "本周", type: "list", filter: [["due", "within", "this_week"]] });
+await vault.saveView("tasks", { name: "本周任务", type: "list" }, "本周"); // 替换 / 改名
+await vault.deleteView("tasks", "本周任务");
+
 // 反向链接、断链、重名
 vault.backlinks("CITS2002 Systems Programming");
 vault.danglingLinks();

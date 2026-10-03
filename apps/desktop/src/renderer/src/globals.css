@@ -29,6 +29,30 @@
   --warning: #8a5a00;
   --warning-surface: #fdf6e7;
   --ring: #2c4a7c;
+  --popover: #ffffff;
+  --popover-foreground: #1e2126;
+  --hover: #f1f2f4;
+  --selected: #e8eef8;
+
+  /* 选项标签的颜色，按选项顺序轮流使用 */
+  --tag-gray: #ebeced;
+  --tag-gray-fg: #4a4f57;
+  --tag-blue: #dde9f7;
+  --tag-blue-fg: #24548a;
+  --tag-yellow: #f8efcf;
+  --tag-yellow-fg: #765b0a;
+  --tag-orange: #fbe7d7;
+  --tag-orange-fg: #8a4b14;
+  --tag-purple: #ebe3f5;
+  --tag-purple-fg: #5b3d8a;
+  --tag-green: #ddefe4;
+  --tag-green-fg: #2a6644;
+  --tag-pink: #f6e0ea;
+  --tag-pink-fg: #8a3560;
+  --tag-brown: #f1e8e2;
+  --tag-brown-fg: #6b4a36;
+  --tag-red: #f9dfdc;
+  --tag-red-fg: #973a32;
 }
 
 .dark {
@@ -53,6 +77,29 @@
   --warning: #e3b55a;
   --warning-surface: #2a2416;
   --ring: #8eaee0;
+  --popover: #202225;
+  --popover-foreground: #e4e6e9;
+  --hover: #24262a;
+  --selected: #23304a;
+
+  --tag-gray: #33363b;
+  --tag-gray-fg: #c5c8cd;
+  --tag-blue: #1f3149;
+  --tag-blue-fg: #94bdeb;
+  --tag-yellow: #403a20;
+  --tag-yellow-fg: #e3cd7d;
+  --tag-orange: #45301f;
+  --tag-orange-fg: #eab184;
+  --tag-purple: #33284a;
+  --tag-purple-fg: #c3a9ea;
+  --tag-green: #213a2c;
+  --tag-green-fg: #8fd1a9;
+  --tag-pink: #43263a;
+  --tag-pink-fg: #e8a6c6;
+  --tag-brown: #3d3029;
+  --tag-brown-fg: #d6b8a3;
+  --tag-red: #4a2522;
+  --tag-red-fg: #f0a29a;
 }
 
 @theme inline {
@@ -80,6 +127,10 @@
   --color-warning: var(--warning);
   --color-warning-surface: var(--warning-surface);
   --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-hover: var(--hover);
+  --color-selected: var(--selected);
 
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);

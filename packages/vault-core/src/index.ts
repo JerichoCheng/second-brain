@@ -7,3 +7,4 @@ export { extractLinks, relationTargets, replaceLinks, invalidTitle, nameKey } fr
 export { localDate, resolveDate, rangeOf, RANGES } from "./dates.js";
 export { atomicWrite } from "./fs.js";
 export { initVault, DEFAULT_SCHEMA_DIR, VAULT_FOLDERS } from "./init.js";
+export { cleanView, upsertViewText, removeViewText } from "./schema-write.js";

@@ -1,9 +1,19 @@
 import { app, BrowserWindow, dialog, ipcMain, shell, type IpcMainInvokeEvent } from 'electron'
 import { BrainError, type ErrorPayload } from '@shared/errors'
 import type { IpcArgs, IpcChannel, IpcResult, IpcReturn } from '@shared/ipc'
+import type { VaultChange } from '@shared/db'
+import { DbService } from './db/service'
 import { isAppUrl } from './security'
 import { getSettings, updateSettings } from './settings'
 import { assertAbsolutePath, initVault, inspectVault } from './vault/vault'
+
+/** 当前 vault 的数据服务；变化推给所有窗口 */
+export const db = new DbService(
+  async () => (await getSettings()).vaultPath,
+  (change: VaultChange) => {
+    for (const w of BrowserWindow.getAllWindows()) w.webContents.send('vault:changed', change)
+  }
+)
 
 interface HandlerContext {
   window: BrowserWindow | null
@@ -48,6 +58,7 @@ const handlers: Handlers = {
       allowNonEmpty: options?.allowNonEmpty === true
     })
     await updateSettings({ vaultPath: result.vault.path })
+    await db.close()
     return result
   },
 
@@ -55,6 +66,7 @@ const handlers: Handlers = {
     const vault = await inspectVault(path)
     if (vault.state !== 'vault') throw new BrainError('NOT_A_VAULT', '这个文件夹还不是知识库')
     await updateSettings({ vaultPath: vault.path })
+    await db.close()
     return vault
   },
 
@@ -63,6 +75,22 @@ const handlers: Handlers = {
     if (!vaultPath) throw new BrainError('NO_VAULT', '还没有选择知识库')
     const error = await shell.openPath(vaultPath)
     if (error) throw new BrainError('INTERNAL', `无法打开文件夹：${error}`)
+  },
+
+  'db:schemas': () => db.schemas(),
+  'db:query': (_ctx, name, view) => db.query(name, view),
+  'db:names': (_ctx, name) => db.names(name),
+  'db:save-view': (_ctx, name, view, replace) => db.saveView(name, view, replace),
+  'db:delete-view': (_ctx, name, view) => db.deleteView(name, view),
+
+  'entry:get': (_ctx, path) => db.get(path),
+  'entry:create': (_ctx, name, title, fields) => db.create(name, title, fields),
+  'entry:update': (_ctx, path, patch) => db.update(path, patch),
+  'entry:rename': (_ctx, path, title) => db.rename(path, title),
+  'entry:remove': (_ctx, path) => db.remove(path),
+  'entry:open-external': async (_ctx, path) => {
+    const error = await shell.openPath(await db.absolutePath(path))
+    if (error) throw new BrainError('INTERNAL', `无法打开文件：${error}`)
   }
 }
 

@@ -7,7 +7,13 @@ const shared = resolve('src/shared')
 
 export default defineConfig({
   main: {
-    resolve: { alias: { '@shared': shared } }
+    resolve: {
+      alias: [
+        { find: '@shared', replacement: shared },
+        // 直接打包 vault-core 的源码，开发时不需要先构建它
+        { find: /^@second-brain\/vault-core$/, replacement: resolve('../../packages/vault-core/src/index.ts') }
+      ]
+    }
   },
   preload: {
     resolve: { alias: { '@shared': shared } }

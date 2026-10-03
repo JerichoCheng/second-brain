@@ -15,6 +15,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
+      "@second-brain/vault-core": ["../../packages/vault-core/src/index.ts"],
+      "@second-brain/vault-core/types": ["../../packages/vault-core/src/types.ts"],
       "@shared/*": ["./src/shared/*"]
     }
   },
@@ -23,6 +25,7 @@
     "vitest.config.ts",
     "src/main/**/*",
     "src/preload/**/*",
-    "src/shared/**/*"
+    "src/shared/**/*",
+    "src/renderer/src/**/*.test.ts"
   ]
 }

@@ -1,3 +1,4 @@
+import type { EntryDetail, QueryData, Row, Schema, SchemaList, VaultChange, ViewDef } from './db'
 import type { ErrorPayload } from './errors'
 
 export type FolderState =
@@ -75,6 +76,19 @@ export interface IpcContract {
   'vault:initialize': { args: [path: string, options: InitOptions]; result: InitResult }
   'vault:open': { args: [path: string]; result: VaultInspection }
   'vault:reveal': { args: []; result: void }
+
+  'db:schemas': { args: []; result: SchemaList }
+  'db:query': { args: [db: string, view: ViewDef]; result: QueryData }
+  'db:names': { args: [db: string]; result: string[] }
+  'db:save-view': { args: [db: string, view: ViewDef, replace?: string]; result: Schema }
+  'db:delete-view': { args: [db: string, name: string]; result: Schema }
+
+  'entry:get': { args: [path: string]; result: EntryDetail }
+  'entry:create': { args: [db: string, title: string, fields: Record<string, unknown>]; result: Row }
+  'entry:update': { args: [path: string, patch: Record<string, unknown>]; result: Row }
+  'entry:rename': { args: [path: string, title: string]; result: Row }
+  'entry:remove': { args: [path: string]; result: void }
+  'entry:open-external': { args: [path: string]; result: void }
 }
 
 export type IpcChannel = keyof IpcContract
@@ -91,14 +105,42 @@ const CHANNELS: Record<IpcChannel, true> = {
   'vault:inspect': true,
   'vault:initialize': true,
   'vault:open': true,
-  'vault:reveal': true
+  'vault:reveal': true,
+  'db:schemas': true,
+  'db:query': true,
+  'db:names': true,
+  'db:save-view': true,
+  'db:delete-view': true,
+  'entry:get': true,
+  'entry:create': true,
+  'entry:update': true,
+  'entry:rename': true,
+  'entry:remove': true,
+  'entry:open-external': true
 }
 
 export function isIpcChannel(value: unknown): value is IpcChannel {
   return typeof value === 'string' && Object.hasOwn(CHANNELS, value)
 }
 
+/** 主进程主动推给界面的事件 */
+export interface EventContract {
+  'vault:changed': VaultChange
+}
+
+export type EventChannel = keyof EventContract
+
+const EVENT_CHANNELS: Record<EventChannel, true> = {
+  'vault:changed': true
+}
+
+export function isEventChannel(value: unknown): value is EventChannel {
+  return typeof value === 'string' && Object.hasOwn(EVENT_CHANNELS, value)
+}
+
 /** 预加载脚本通过 contextBridge 暴露为 window.brain */
 export interface BrainBridge {
   invoke<C extends IpcChannel>(channel: C, ...args: IpcArgs<C>): Promise<IpcResult<IpcReturn<C>>>
+  /** 订阅主进程推送的事件，返回取消订阅的函数 */
+  on<E extends EventChannel>(channel: E, listener: (payload: EventContract[E]) => void): () => void
 }

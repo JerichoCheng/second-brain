@@ -1,7 +1,11 @@
 import { join } from 'node:path'
 import { app, BrowserWindow, nativeTheme, shell } from 'electron'
-import { registerIpcHandlers } from './ipc'
+import { db, registerIpcHandlers } from './ipc'
 import { isAppUrl } from './security'
+
+// 开发时可以换一份应用设置（比如指向测试用的知识库），不影响平时用的那份
+const devUserData = process.env['SECOND_BRAIN_USER_DATA']
+if (!app.isPackaged && devUserData) app.setPath('userData', devUserData)
 
 function createWindow(): void {
   const window = new BrowserWindow({
@@ -51,6 +55,10 @@ app.whenReady().then(() => {
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+})
+
+app.on('will-quit', () => {
+  void db.close()
 })
 
 app.on('window-all-closed', () => {

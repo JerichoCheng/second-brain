@@ -5,6 +5,8 @@ export type ErrorCode =
   | 'NOT_A_VAULT'
   | 'NO_VAULT'
   | 'PERMISSION_DENIED'
+  /** 数据层拒绝的操作：校验失败、重名、找不到页面等 */
+  | 'VAULT'
   | 'FORBIDDEN'
   | 'INTERNAL'
 

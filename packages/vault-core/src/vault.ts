@@ -7,7 +7,8 @@ import { atomicWrite, exists, moveFile, TMP_SUFFIX } from "./fs.js";
 import { parseFile, serialize, updateRaw } from "./frontmatter.js";
 import { extractLinks, invalidTitle, linkTo, linksInValue, nameKey, relationTargets, replaceLinks } from "./links.js";
 import { getValue, runQuery, type IndexLike, type Value } from "./query.js";
-import { loadSchemas, rangeStartField, validateSchemas } from "./schema.js";
+import { loadSchemas, parseSchema, rangeStartField, validateSchemas } from "./schema.js";
+import { cleanView, removeViewText, upsertViewText } from "./schema-write.js";
 import type { Entry, QueryContext, QueryResult, Schema, VaultEvent, ViewDef } from "./types.js";
 
 export class VaultError extends Error {}
@@ -451,6 +452,60 @@ export class Vault extends EventEmitter<{ event: [VaultEvent] }> implements Inde
     const e = this.get(target);
     if (!e) throw new VaultError(`找不到页面「${target}」`);
     return e;
+  }
+
+  // ---------------------------------------------------------------- 视图
+
+  private async schemaFile(db: string): Promise<string> {
+    this.schemaOf(db);
+    for (const ext of [".yaml", ".yml"]) {
+      const rel = `${this.schemaDir}/${db}${ext}`;
+      if (await exists(this.abs(rel))) return rel;
+    }
+    throw new VaultError(`找不到数据库 ${db} 的 schema 文件`);
+  }
+
+  /** 改写 schema 文件。写入前用新内容做一次自洽性检查，只拦截与视图 check 有关的问题。 */
+  private async editSchema(db: string, edit: (text: string) => string, check?: string): Promise<Schema> {
+    const rel = await this.schemaFile(db);
+    return this.withLock(`schema:${db}`, async () => {
+      const text = await fs.readFile(this.abs(rel), "utf8");
+      const next = edit(text);
+      if (check) {
+        const schemas = new Map(this.schemas);
+        schemas.set(db, parseSchema(db, next));
+        const prefix = `${db}: 视图「${check}」`;
+        const errors = validateSchemas(schemas).filter((e) => e.startsWith(prefix));
+        if (errors.length) throw new VaultError(errors.map((e) => e.slice(db.length + 2)).join("；"));
+      }
+      await atomicWrite(this.abs(rel), next);
+      await this.reloadSchemas();
+      return this.schemaOf(db);
+    });
+  }
+
+  /**
+   * 把视图写回 schema 文件。replace 为已有视图名时原位替换（可同时改名），否则新增。
+   * 文件里的注释和其他视图保持原样。
+   */
+  async saveView(db: string, view: ViewDef, replace?: string): Promise<Schema> {
+    const name = view.name?.trim();
+    if (!name) throw new VaultError("视图名不能为空");
+    const schema = this.schemaOf(db);
+    if (replace !== undefined && !schema.views.some((v) => v.name === replace)) {
+      throw new VaultError(`${db} 中没有视图「${replace}」`);
+    }
+    if (name !== replace && schema.views.some((v) => v.name === name)) {
+      throw new VaultError(`已经有名为「${name}」的视图`);
+    }
+    const clean = cleanView({ ...view, name });
+    return this.editSchema(db, (text) => upsertViewText(text, clean, replace), name);
+  }
+
+  async deleteView(db: string, name: string): Promise<Schema> {
+    const schema = this.schemaOf(db);
+    if (!schema.views.some((v) => v.name === name)) throw new VaultError(`${db} 中没有视图「${name}」`);
+    return this.editSchema(db, (text) => removeViewText(text, name));
   }
 
   // ---------------------------------------------------------------- 监听
