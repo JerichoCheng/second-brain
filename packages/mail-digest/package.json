@@ -1,0 +1,30 @@
+{
+  "name": "@second-brain/mail-digest",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "第二大脑：每日邮件分析（UWA Outlook / Gmail / QQ / 163 → DeepSeek → vault）",
+  "scripts": {
+    "digest": "tsx src/index.ts",
+    "login": "tsx src/index.ts --login",
+    "dry": "tsx src/index.ts --dry-run",
+    "mock": "tsx src/index.ts --mock",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^7.0.1",
+    "dotenv": "^17.0.0",
+    "html-to-text": "^9.0.5",
+    "imapflow": "^2.2.1",
+    "js-yaml": "^4.1.0",
+    "mailparser": "^3.7.0"
+  },
+  "devDependencies": {
+    "@types/html-to-text": "^9.0.4",
+    "@types/js-yaml": "^4.0.9",
+    "@types/mailparser": "^3.4.6",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
