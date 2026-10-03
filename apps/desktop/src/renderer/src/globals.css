@@ -1,0 +1,123 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * 颜色：中性冷灰 + 一种墨蓝色，界面让位给内容。
+ * 变量名沿用 shadcn/ui 的约定，以后用 shadcn 添加的组件可以直接套用。
+ */
+:root {
+  --radius: 0.375rem;
+  --background: #ffffff;
+  --foreground: #1e2126;
+  --muted: #f3f4f6;
+  --muted-foreground: #6a6f78;
+  --sidebar: #f4f5f7;
+  --sidebar-foreground: #464b53;
+  --sidebar-accent: #e6e8ec;
+  --sidebar-accent-foreground: #1e2126;
+  --border: #e4e6ea;
+  --input: #d5d8de;
+  --primary: #2c4a7c;
+  --primary-foreground: #ffffff;
+  --secondary: #eef0f3;
+  --secondary-foreground: #1e2126;
+  --accent: #eef0f3;
+  --accent-foreground: #1e2126;
+  --destructive: #b8342c;
+  --success: #2e7a4f;
+  --warning: #8a5a00;
+  --warning-surface: #fdf6e7;
+  --ring: #2c4a7c;
+}
+
+.dark {
+  --background: #18191b;
+  --foreground: #e4e6e9;
+  --muted: #222427;
+  --muted-foreground: #969ba3;
+  --sidebar: #1f2023;
+  --sidebar-foreground: #b6bac1;
+  --sidebar-accent: #2c2e32;
+  --sidebar-accent-foreground: #e4e6e9;
+  --border: #2d2f33;
+  --input: #3a3d42;
+  --primary: #8eaee0;
+  --primary-foreground: #14181f;
+  --secondary: #26282c;
+  --secondary-foreground: #e4e6e9;
+  --accent: #26282c;
+  --accent-foreground: #e4e6e9;
+  --destructive: #e0675f;
+  --success: #6cc18f;
+  --warning: #e3b55a;
+  --warning-surface: #2a2416;
+  --ring: #8eaee0;
+}
+
+@theme inline {
+  --font-sans: 'Segoe UI Variable Text', 'Segoe UI', 'Microsoft YaHei UI', 'PingFang SC', system-ui, sans-serif;
+  --font-mono: 'Cascadia Mono', Consolas, 'Microsoft YaHei UI', ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-warning-surface: var(--warning-surface);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+/* 创建完成时目录逐项打勾：整个界面唯一的入场动画 */
+@keyframes tick-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.tick-in {
+  animation: tick-in 180ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tick-in {
+    animation: none;
+  }
+}
